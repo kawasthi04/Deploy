@@ -1,0 +1,37 @@
+// constants.js
+export const technicalClubs = [
+    'Ashwa Racing',
+    'Team Vyoma',
+    'Team Chimera',
+    'Team Garuda',
+    'Team Helios',
+    'Project Jatayu',
+    'Team Astra',
+    'Team Krushi',
+    'Team Antariksh',
+    'Frequency Club',
+    'Team Hydra',
+    'E Cell',
+    'Coding Club',
+    'Team Dhruva',
+    'RVCE HAM Club',
+  ];
+  
+  export const culturalClubs = [
+    'Alaap',
+    'CARV Access',
+    'CARV English',
+    'CARV Hindi',
+    'CARV Kannada',
+    'Kannada Sanga',
+    'DebSoc',
+    'QuizCorp',
+    'Footprints',
+    'Evoke',
+    'RAAG',
+    'Rotaract',
+    'Satva',
+    'Photography',
+    'NSS',
+    'NCC',
+  ];

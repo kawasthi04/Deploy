@@ -1,0 +1,134 @@
+/* AboutUs.css */
+
+.about-us-container {
+  padding: 40px;
+  max-width: 900px;
+  margin: 40px auto;
+  text-align: center;
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.about-header {
+  margin-bottom: 30px;
+  animation: slideInDown 0.8s ease-out;
+}
+
+.about-title {
+  font-size: 3em;
+  margin: 0;
+  color: #333;
+}
+
+.about-tagline {
+  font-size: 1.3em;
+  color: #777;
+  margin-top: 10px;
+}
+
+.about-body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  animation: fadeIn 1s ease-in;
+}
+
+.about-description p {
+  font-size: 1.15em;
+  line-height: 1.6;
+  color: #555;
+  margin: 0 20px;
+}
+
+.about-team {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.dev-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dev-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dev-image {
+  width: 100%;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.dev-image:hover {
+  transform: scale(1.05);
+}
+
+.dev-name {
+  margin: 10px 0 5px;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.dev-role {
+  font-size: 0.95em;
+  color: #666;
+}
+
+.back-button {
+  margin-top: 30px;
+  padding: 12px 25px;
+  font-size: 1em;
+  background-color: #a67c52;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #8b5e3c;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,860 @@
+/* ===================== */
+/*       GLOBAL STYLES   */
+/* ===================== */
+body {
+  font-family: 'Roboto', "Helvetica Neue", sans-serif;
+  /* A fruity pastel gradient background */
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  color: #2d3436;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===================== */
+/*        HEADER         */
+/* ===================== */
+header {
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(255,159,243,0.8), rgba(254,202,87,0.8));
+  border-bottom: 2px solid rgba(255,105,135,0.8);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* ===================== */
+/*      LAYOUT TOGGLE    */
+/* ===================== */
+.layout-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.layout-label {
+  cursor: pointer;
+  padding: 5px 10px;
+  font-weight: bold;
+  color: #2d3436;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(254,202,87,0.8);
+  border-radius: 4px;
+  transition: color 0.3s ease, background 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.layout-label.active {
+  color: #fff;
+  background: rgba(255,105,135,0.8);
+  border-color: rgba(255,105,135,0.8);
+}
+
+.google-toggle-btn {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(254,202,87,0.8);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+/* ===================== */
+/*    ARTICLES PAGE      */
+/* ===================== */
+.content {
+  display: flex;
+  padding: 20px;
+}
+
+.sticky-day-header {
+  position: sticky;
+  top: 0;
+  /* background: rgba(255,255,255,0.8); */
+  z-index: 10;
+  text-align: center;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(254,202,87,0.8);
+  backdrop-filter: blur(5px);
+}
+
+.day-separator {
+  border: none;
+  height: 1px;
+  background-color: rgba(255,105,135,0.8);
+  margin: 0;
+  width: 100%;
+}
+
+.current-day-label {
+  font-size: 14px;
+  color: #2d3436;
+  margin-right: 10px;
+}
+
+.news-container {
+  overflow-y: auto;
+  height: 500px;
+  gap: 15px;
+  padding-right: 10px;
+  flex: 2;
+}
+
+.news-container.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.news-container.inline {
+  display: flex;
+  flex-direction: column;
+}
+
+.news-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.news-container::-webkit-scrollbar-track {
+  background: rgba(254,202,87,0.3);
+  border-radius: 8px;
+}
+
+.news-container::-webkit-scrollbar-thumb {
+  background: rgba(255,105,135,0.8);
+  border-radius: 8px;
+}
+
+.news-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,105,135,1);
+}
+
+.news-item {
+  background: rgba(255,255,255,0.7);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(254,202,87,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.news-item:hover {
+  transform: translateY(-3px);
+  background: rgba(255,240,230,0.8);
+}
+
+.article-content {
+  flex: 1;
+}
+
+.timestamp {
+  font-size: 0.85em;
+  color: #2d3436;
+  margin-bottom: 10px;
+}
+
+.tags-container {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 0.8em;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,105,135,0.8);
+  background: rgba(255,255,255,0.5);
+  color: #2d3436;
+  backdrop-filter: blur(5px);
+}
+
+.tag.category-tag {
+  background-color: rgba(255,105,135,0.8);
+  color: #fff;
+}
+
+.tag.category-tag:hover {
+  background-color: rgba(255,105,135,1);
+}
+
+.tag.tag-item {
+  background-color: rgba(254,202,87,0.8);
+  color: #2d3436;
+}
+
+.tag.tag-item:hover {
+  background-color: rgba(254,202,87,1);
+}
+
+/* ===================== */
+/*  CALENDAR & FILTERS   */
+/* ===================== */
+.calendar-section {
+  background: rgba(255,255,255,0.7);
+  padding: 20px;
+  border-radius: 8px;
+  margin-left: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(254,202,87,0.8);
+  backdrop-filter: blur(5px);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #2d3436;
+}
+
+.add-article-btn {
+  background: rgba(255,105,135,0.8);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.add-article-btn:hover {
+  background: rgba(255,105,135,1);
+}
+
+.calendar-container {
+  margin-bottom: 15px;
+}
+
+.filter-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dropdown-container,
+.search-container,
+.active-tags {
+  text-align: center;
+}
+
+.dropdown-container select,
+.search-container input[type="text"] {
+  background: rgba(255,255,255,0.8);
+  color: #2d3436;
+  border: 1px solid rgba(254,202,87,0.8);
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 80%;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
+}
+
+/* React Calendar Overrides */
+.react-calendar {
+  background-color: rgba(255,255,255,0.8);
+  color: #2d3436;
+  border: 1px solid rgba(254,202,87,0.8);
+  border-radius: 5px;
+  backdrop-filter: blur(5px);
+}
+
+.react-calendar button {
+  color: #2d3436;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+  font-size: 16px;
+  margin: 2px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background: rgba(254,202,87,0.8);
+  border-radius: 3px;
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: rgba(254,202,87,0.8);
+  border-bottom: 1px solid rgba(254,202,87,0.8);
+}
+
+.react-calendar__tile {
+  background: none;
+  border: none;
+  padding: 10px 6px;
+  margin: 2px;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background: rgba(254,202,87,0.8);
+  border-radius: 3px;
+}
+
+.react-calendar__tile--active {
+  background: rgba(254,202,87,0.8);
+  color: #2d3436;
+}
+
+/* ===================== */
+/*  POPUP & MODAL STYLES */
+/* ===================== */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.popup-content {
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  padding: 20px;
+  width: 600px;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid rgba(254,202,87,0.8);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.popup-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+  background: rgba(254,202,87,0.8);
+  border-radius: 8px;
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(254,202,87,1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #2d3436;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.popup-header {
+  position: relative;
+  padding: 20px;
+  background: rgba(255,255,255,0.8);
+  border-bottom: 1px solid rgba(254,202,87,0.8);
+  flex-shrink: 0;
+  backdrop-filter: blur(5px);
+}
+
+.popup-body {
+  overflow-y: auto;
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.popup-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.popup-body::-webkit-scrollbar-track {
+  background: rgba(254,202,87,0.3);
+  border-radius: 8px;
+}
+
+.popup-body::-webkit-scrollbar-thumb {
+  background: rgba(255,105,135,0.8);
+  border-radius: 8px;
+}
+
+.popup-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,105,135,1);
+}
+
+/* Share Icon Button in Article Card */
+.share-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  z-index: 5;
+  transition: transform 0.2s ease;
+}
+
+.share-btn:hover {
+  transform: scale(1.1);
+}
+
+.share-icon {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--highlight-color, rgba(255,105,135,0.8));
+  transition: color 0.3s ease;
+}
+
+.share-btn:hover .share-icon {
+  color: var(--highlight-hover, rgba(255,105,135,1));
+}
+
+.popup-share-btn-inline {
+  margin-left: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  vertical-align: middle;
+}
+
+.share-icon-inline {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--highlight-color, rgba(255,105,135,0.8));
+  transition: color 0.3s ease;
+}
+
+.popup-share-btn-inline:hover .share-icon-inline {
+  color: var(--highlight-hover, rgba(255,105,135,1));
+}
+
+.whatsapp-share-btn {
+  background-color: #25D366;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.whatsapp-share-btn:hover {
+  background-color: #1DA851;
+}
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: #2d3436;
+  font-size: 2.5rem;
+  padding: 0 20px;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.nav-arrow:hover {
+  color: rgba(255,105,135,1);
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.popup-content.news-article-popup {
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  width: 600px;
+  max-width: 90%;
+  max-height: 80vh;
+  border: 1px solid rgba(254,202,87,0.8);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+/* ===================== */
+/*  ADD ARTICLE PAGE     */
+/* ===================== */
+.add-article-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.add-article-section {
+  background: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+  border: 1px solid rgba(254,202,87,0.8);
+  backdrop-filter: blur(5px);
+}
+
+.add-article-section h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+  color: #2d3436;
+}
+
+#news-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#news-form input[type="text"],
+#news-form textarea,
+#news-form select {
+  width: 100%;
+  background: rgba(255,255,255,0.8);
+  color: #2d3436;
+  border: 1px solid rgba(254,202,87,0.8);
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  backdrop-filter: blur(5px);
+}
+
+#news-form input[type="text"]::placeholder,
+#news-form textarea::placeholder {
+  font-family: 'Segoe UI', sans-serif;
+  color: #2d3436;
+  opacity: 0.7;
+}
+
+#news-form button {
+  background: rgba(255,105,135,0.8);
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 16px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#news-form button:hover {
+  background: rgba(255,105,135,1);
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: rgba(255,105,135,0.8);
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+  color: rgba(255,105,135,1);
+}
+
+/* ===================== */
+/*  CLUB SELECTOR STYLES */
+/* ===================== */
+.club-selection {
+  margin: 15px 0;
+  border-top: 1px solid rgba(254,202,87,0.8);
+  padding-top: 10px;
+}
+
+.club-selection h3 {
+  margin-bottom: 8px;
+  color: #2d3436;
+}
+
+.club-group {
+  margin-bottom: 10px;
+}
+
+.club-group h4 {
+  margin: 5px 0;
+  font-size: 1em;
+  color: #2d3436;
+}
+
+.club-tag {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 20px;
+  background-color: rgba(255,255,255,0.6);
+  color: #2d3436;
+  cursor: pointer;
+  border: 1px solid rgba(254,202,87,0.8);
+  transition: background 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.club-tag.selected {
+  background-color: rgba(255,105,135,0.8);
+  color: #fff;
+}
+
+/* ===================== */
+/*  CUSTOM FILE UPLOAD   */
+/* ===================== */
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255,105,135,0.8);
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background: rgba(255,105,135,1);
+}
+
+.file-upload-container {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+/* ===================== */
+/*  ATTACHMENTS STYLING   */
+/* ===================== */
+.attachments-container {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid rgba(254,202,87,0.8);
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.8);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.popup-image-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.popup-image {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 4px;
+  border: 1px solid rgba(254,202,87,0.8);
+}
+
+/* ===================== */
+/*  LOGIN FORM STYLES    */
+/* ===================== */
+.error-message {
+  color: #ff0000;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#login-form input[type="text"],
+#login-form input[type="password"] {
+  width: 100%;
+  background: rgba(255,255,255,0.8);
+  color: #2d3436;
+  border: 1px solid rgba(254,202,87,0.8);
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  backdrop-filter: blur(5px);
+}
+
+#login-form input[type="text"]::placeholder,
+#login-form input[type="password"]::placeholder {
+  color: #2d3436;
+  opacity: 0.7;
+}
+
+#login-form button {
+  background: rgba(255,105,135,0.8);
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#login-form button:hover {
+  background: rgba(255,105,135,1);
+}
+
+.join-admin-btn {
+  background: rgba(255,105,135,0.8);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.join-admin-btn:hover {
+  background: rgba(255,105,135,1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgba(245,245,245,0.8);
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+.header-left h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header-right {
+  position: relative;
+}
+
+.settings-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.settings-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.setting-item {
+  margin-bottom: 10px;
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-item label {
+  margin-right: 5px;
+  font-weight: bold;
+  color: #2d3436;
+}
+
+/* ===================== */
+/*      EDIT BUTTON      */
+/* ===================== */
+button.edit-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #a67c52;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button.edit-btn:hover {
+  background: #8b5e3c;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button.edit-btn:active {
+  background: #6f4c2f;
+  transform: translateY(1px);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* Prevent main window scrolling */
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,578 @@
+
+/* ===================== */
+/*       GLOBAL STYLES   */
+/* ===================== */
+body {
+    font-family: "Georgia", serif;
+    background-color: #e8e2d6; /* Slightly darker natural paper tone */
+    color: #3a3a3a;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* ===================== */
+  /*        HEADER         */
+  /* ===================== */
+  header {
+    padding: 20px;
+    text-align: center;
+    color: #3a3a3a;
+    background: linear-gradient(90deg, #d0e8d8, #c8e0d0); /* Darker gradient */
+    border-bottom: 2px solid #7da31f; /* Darker green accent */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ===================== */
+  /*      LAYOUT TOGGLE    */
+  /* ===================== */
+  .layout-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .layout-label {
+    cursor: pointer;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: #3a3a3a;
+    background: #fff;
+    border: 1px solid #7da31f;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .layout-label.active {
+    color: #fff;
+    background: #7da31f;
+  }
+  .google-toggle-btn {
+    background: #fff;
+    border: 1px solid #7da31f;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* ===================== */
+  /*    ARTICLES PAGE      */
+  /* ===================== */
+  .content {
+    display: flex;
+    padding: 20px;
+    /* gap: 20px; */
+  }
+  
+  /* Sticky header for current day */
+  .sticky-day-header {
+    position: sticky;
+    top: 0;
+    background: #e8e2d6;
+    z-index: 10;
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #c9d9c0;
+  }
+  .day-separator {
+    border: none;
+    height: 1px;
+    background-color: #c9d9c0;
+    margin: 0;
+    width: 100%;
+  }
+  .current-day-label {
+    font-size: 14px;
+    color: #6ca036;
+    margin-right: 10px;
+  }
+  
+  /* Articles Container */
+  .news-container {
+    overflow-y: auto;
+    height: 500px;
+    gap: 15px;
+    padding-right: 10px;
+    flex: 2;
+  }
+  .news-container.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+  .news-container.inline {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Scrollbar for Articles Grid */
+  .news-container::-webkit-scrollbar {
+    width: 10px;
+  }
+  .news-container::-webkit-scrollbar-track {
+    background: #dcefe5;
+    border-radius: 8px;
+  }
+  .news-container::-webkit-scrollbar-thumb {
+    background: #7da31f;
+    border-radius: 8px;
+  }
+  .news-container::-webkit-scrollbar-thumb:hover {
+    background: #6ca036;
+  }
+  
+  /* Article Cards */
+  .news-item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #c9d9c0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  .news-item:hover {
+    transform: translateY(-3px);
+    background: #e6f0e2;
+  }
+  .article-content {
+    flex: 1;
+  }
+  .timestamp {
+    font-size: 0.85em;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  
+  /* ===================== */
+  /*          TAGS         */
+  /* ===================== */
+  .tags-container {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .tag {
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 0.8em;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #7da31f;
+    background: #fff;
+    color: #3a3a3e;
+  }
+  .tag.category-tag {
+    background: #7da31f;
+    color: #fff;
+  }
+  .tag.category-tag:hover {
+    background: #6ca036;
+  }
+  .tag.tag-item {
+    background: #d0e8e0;
+    color: #3a3a3e;
+  }
+  .tag.tag-item:hover {
+    background: #c2dfd0;
+  }
+  
+  /* ===================== */
+  /*  CALENDAR & FILTERS   */
+  /* ===================== */
+  .calendar-section {
+    background: #e6f0e5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-left: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid #c9d9c0;
+  }
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .calendar-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #3a3a3a;
+  }
+  .add-article-btn {
+    background: #7da31f;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s ease;
+  }
+  .add-article-btn:hover {
+    background: #6ca036;
+  }
+  .calendar-container {
+    margin-bottom: 15px;
+  }
+  .filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .dropdown-container,
+  .search-container,
+  .active-tags {
+    text-align: center;
+  }
+  .dropdown-container select,
+  .search-container input[type="text"] {
+    background: #fff;
+    color: #3a3a3e;
+    border: 1px solid #c9d9c0;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 80%;
+    margin: 0 auto;
+  }
+  .active-tags h3 {
+    margin: 0 0 10px;
+    font-size: 1em;
+    color: #3a3a3a;
+  }
+  
+  /* ===================== */
+  /*  REACT CALENDAR OVERRIDES  */
+  /* ===================== */
+  .react-calendar {
+    background-color: #fff;
+    color: #3a3a3a;
+    border: 1px solid #c9d9c0;
+    border-radius: 5px;
+  }
+  .react-calendar button {
+    color: #3a3a3a;
+  }
+  .react-calendar__navigation button {
+    min-width: 44px;
+    background: none;
+    font-size: 16px;
+    margin: 2px;
+    text-transform: uppercase;
+  }
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus {
+    background: #e8f5e9;
+    border-radius: 3px;
+  }
+  .react-calendar__month-view__weekdays {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #e6f0e5;
+    border-bottom: 1px solid #c9d9c0;
+  }
+  .react-calendar__tile {
+    background: none;
+    border: none;
+    padding: 10px 6px;
+    margin: 2px;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+  }
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    background: #e8f5e9;
+    border-radius: 3px;
+  }
+  .react-calendar__tile--active {
+    background: #c9d9c0;
+    color: #3a3a3a;
+  }
+  
+  /* ===================== */
+  /*  POPUP & MODAL STYLES  */
+  /* ===================== */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(247, 243, 237, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .popup-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 600px;
+    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid #c9d9c0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+  .popup-content::-webkit-scrollbar {
+    width: 10px;
+  }
+  .popup-content::-webkit-scrollbar-track {
+    background: #fafafa;
+    border-radius: 8px;
+  }
+  .popup-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 8px;
+  }
+  .popup-content::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    color: #3a3a3a;
+    cursor: pointer;
+  }
+  
+  /* ===================== */
+  /*  ADD ARTICLE PAGE     */
+  /* ===================== */
+  .add-article-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .add-article-section {
+    background: #e6f0e5;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
+    border: 1px solid #c9d9c0;
+  }
+  .add-article-section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    color: #3a3a3a;
+  }
+  #news-form {
+    display: flex;
+    flex-direction: column;
+  }
+  #news-form input[type="text"],
+  #news-form textarea,
+  #news-form select {
+    width: 100%;
+    background: #fff;
+    color: #3a3a3a;
+    border: 1px solid #c9d9c0;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  #news-form input[type="text"]::placeholder,
+  #news-form textarea::placeholder {
+    color: #777;
+    opacity: 0.7;
+  }
+  #news-form button {
+    background: #7da31f;
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+  }
+  #news-form button:hover {
+    background: #6ca036;
+  }
+  .back-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .back-link a {
+    text-decoration: none;
+    color: #7da31f;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  .back-link a:hover {
+    color: #6ca036;
+  }
+  
+  /* ===================== */
+  /*  CLUB SELECTOR STYLES  */
+  /* ===================== */
+  .club-selection {
+    margin: 15px 0;
+    border-top: 1px solid #c9d9c0;
+    padding-top: 10px;
+  }
+  .club-selection h3 {
+    margin-bottom: 8px;
+    color: #3a3a3a;
+  }
+  .club-group {
+    margin-bottom: 10px;
+  }
+  .club-group h4 {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #3a3a3a;
+  }
+  .club-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 3px;
+    border-radius: 20px;
+    background: #fff;
+    color: #3a3a3e;
+    cursor: pointer;
+    border: 1px solid #c9d9c0;
+    transition: background 0.3s ease;
+  }
+  .club-tag.selected {
+    background: #7da31f;
+    color: #fff;
+  }
+  
+  /* ===================== */
+  /*  CUSTOM FILE UPLOAD   */
+  /* ===================== */
+  .custom-file-upload {
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+    background: #7da31f;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    transition: background 0.3s ease;
+  }
+  .custom-file-upload:hover {
+    background: #6ca036;
+  }
+  
+  /* ===================== */
+  /*  FILE UPLOAD CONTAINER */
+  /* ===================== */
+  .file-upload-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+  
+  /* ===================== */
+  /*  PDF ATTACHMENTS      */
+  /* ===================== */
+  .attachments-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #c9d9c0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+  .attachments-container h3 {
+    margin: 0 0 10px;
+    font-size: 1.1em;
+    color: #3a3a3e;
+    font-weight: bold;
+  }
+  .attachments-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .attachments-list li {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #c9d9c0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #3a3a3e;
+    font-size: 0.9em;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .attachments-list li:hover {
+    background: #e8f5e9;
+    transform: translateY(-2px);
+  }
+  .attachments-list li::before {
+    content: "📄";
+    margin-right: 8px;
+    font-size: 1.2em;
+  }
+  .attachments-list li a {
+    color: #7da31f;
+    text-decoration: none;
+    margin-right: 8px;
+  }
+  .attachments-list li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* ===================== */
+  /*  NAVIGATION ARROWS    */
+  /* ===================== */
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #7da31f;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    z-index: 10;
+    transition: background 0.3s ease;
+  }
+  .nav-arrow:hover {
+    background: #6ca036;
+  }
+  .left-arrow {
+    left: 10px;
+  }
+  .right-arrow {
+    right: 10px;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden; /* Prevent main window scrolling */
+    margin: 0;
+    padding: 0;
+}
