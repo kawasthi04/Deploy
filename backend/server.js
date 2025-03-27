@@ -12,7 +12,10 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: "https://axiomfe.onrender.com"  // or use '*' for testing, then restrict later
+}));
 app.use(express.json());
 
 // Connect to MongoDB Atlas
