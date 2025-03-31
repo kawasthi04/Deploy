@@ -11,7 +11,12 @@ import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
 import AboutUs from "./components/AboutUs";
 import { isSameDay } from "./components/utils";
-// import  "./components/Animations";
+// import "./components/Animations";
+
+// Define your API URL - make sure to use the correct port
+const API_URL = process.env.REACT_APP_BACKEND_URL || "https://axiom-yyrh.onrender.com";
+axios.get(`${API_URL}/articles`);
+
 
 function App() {
   // State variables for articles, admin, modals, etc.
@@ -50,11 +55,28 @@ function App() {
   const [adminId, setAdminId] = useState(null);
   const [adminUsername, setAdminUsername] = useState(null);
   const [editingArticle, setEditingArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // New state to toggle between Home and About Us views.
   const [currentView, setCurrentView] = useState("home");
 
   const articlesContainerRef = useRef(null);
+
+  // Check for stored admin token on component mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem("adminToken");
+    if (storedToken) {
+      // Validate token and set admin state
+      const storedAdminId = localStorage.getItem("adminId");
+      const storedUsername = localStorage.getItem("adminUsername");
+      if (storedAdminId && storedUsername) {
+        setAdminId(storedAdminId);
+        setAdminUsername(storedUsername);
+        setIsAdminAuthenticated(true);
+      }
+    }
+  }, []);
 
   // Theme loading effect
   useEffect(() => {
@@ -73,16 +95,31 @@ function App() {
 
   // Fetch articles from backend
   useEffect(() => {
+    setLoading(true);
+    setError(null);
+    
+    console.log(`Fetching articles from: ${API_URL}/articles`);
+    
     axios
-      .get("http://localhost:5000/articles")
+      .get(`${API_URL}/articles`)
       .then((response) => {
-        const sorted = response.data.sort(
-          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-        );
-        setArticles(sorted);
+        console.log("Articles fetched successfully:", response.data);
+        if (response.data && Array.isArray(response.data)) {
+          const sorted = response.data.sort(
+            (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+          );
+          setArticles(sorted);
+        } else {
+          console.error("Unexpected response format:", response.data);
+          setError("Received invalid data format from server");
+        }
       })
       .catch((error) => {
         console.error("Error fetching articles:", error);
+        setError(`Failed to fetch articles: ${error.message}`);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -100,15 +137,18 @@ function App() {
 
   // Filter articles based on category, tags, and search query
   const filteredArticles = articles.filter((article) => {
+    // Ensure article has all required fields before filtering
+    if (!article || typeof article !== 'object') return false;
+    
     const matchesCategory =
       categoryFilter === "all" ? true : article.category === categoryFilter;
     const matchesTags =
       selectedTags.length === 0 ||
-      (article.tags && article.tags.some((tag) => selectedTags.includes(tag)));
+      (article.tags && Array.isArray(article.tags) && article.tags.some((tag) => selectedTags.includes(tag)));
     const matchesSearch =
       searchQuery.trim() === "" ||
-      article.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.content.toLowerCase().includes(searchQuery.toLowerCase());
+      (article.headline && article.headline.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (article.content && article.content.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesTags && matchesSearch;
   });
 
@@ -203,11 +243,13 @@ function App() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/admins/login",
+        `${API_URL}/admins/login`,
         loginForm
       );
       const { token, adminId, username } = response.data;
       localStorage.setItem("adminToken", token);
+      localStorage.setItem("adminId", adminId);
+      localStorage.setItem("adminUsername", username);
       setAdminId(adminId);
       setAdminUsername(username);
       setIsAdminAuthenticated(true);
@@ -221,6 +263,15 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminId");
+    localStorage.removeItem("adminUsername");
+    setAdminId(null);
+    setAdminUsername(null);
+    setIsAdminAuthenticated(false);
+  };
+
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     if (registerForm.password !== registerForm.confirmPassword) {
@@ -228,7 +279,7 @@ function App() {
       return;
     }
     try {
-      await axios.post("http://localhost:5000/admins/register", {
+      await axios.post(`${API_URL}/admins/register`, {
         username: registerForm.username,
         password: registerForm.password,
       });
@@ -303,71 +354,83 @@ function App() {
     let imageUrls = [];
     let pdfUrls = [];
 
-    if (selectedFiles.length > 0) {
-      const formDataUpload = new FormData();
-      selectedFiles.forEach((file) => {
-        formDataUpload.append("images", file);
-      });
-      try {
-        const uploadResponse = await axios.post(
-          "http://localhost:5000/upload",
-          formDataUpload,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-        imageUrls = uploadResponse.data;
-      } catch (error) {
-        console.error("Error uploading images:", error);
-      }
-    }
-
-    if (selectedPdfFiles.length > 0) {
-      const formDataUploadPdfs = new FormData();
-      selectedPdfFiles.forEach((file) => {
-        formDataUploadPdfs.append("pdfs", file);
-      });
-      try {
-        const uploadPdfResponse = await axios.post(
-          "http://localhost:5000/upload-pdfs",
-          formDataUploadPdfs,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-        pdfUrls = uploadPdfResponse.data;
-      } catch (error) {
-        console.error("Error uploading PDFs:", error);
-      }
-    }
-
-    const manualTags = newArticleForm.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag);
-    const combinedTags = [...manualTags, ...newArticleForm.clubs];
-
-    const finalAuthor = isAdminAuthenticated
-      ? adminUsername
-      : newArticleForm.author;
-    const finalAdminId = isAdminAuthenticated ? adminId : null;
-
-    const articleData = {
-      headline: newArticleForm.headline,
-      content: newArticleForm.content,
-      category: newArticleForm.category,
-      adminName: finalAuthor,
-      adminId: finalAdminId,
-      timestamp: new Date(),
-      tags: combinedTags,
-      images: imageUrls,
-      attachments: pdfUrls,
-    };
-
     try {
+      // Get auth token
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        throw new Error("Authentication required");
+      }
+
+      // Upload images if any
+      if (selectedFiles.length > 0) {
+        const formDataUpload = new FormData();
+        selectedFiles.forEach((file) => {
+          formDataUpload.append("images", file);
+        });
+        try {
+          const uploadResponse = await axios.post(
+            `${API_URL}/upload`,
+            formDataUpload,
+            { 
+              headers: { 
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`
+              } 
+            }
+          );
+          imageUrls = uploadResponse.data;
+        } catch (error) {
+          console.error("Error uploading images:", error);
+          alert("Failed to upload images. " + error.message);
+        }
+      }
+
+      // Upload PDFs if any
+      if (selectedPdfFiles.length > 0) {
+        const formDataUploadPdfs = new FormData();
+        selectedPdfFiles.forEach((file) => {
+          formDataUploadPdfs.append("pdfs", file);
+        });
+        try {
+          const uploadPdfResponse = await axios.post(
+            `${API_URL}/upload-pdfs`,
+            formDataUploadPdfs,
+            { 
+              headers: { 
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`
+              } 
+            }
+          );
+          pdfUrls = uploadPdfResponse.data;
+        } catch (error) {
+          console.error("Error uploading PDFs:", error);
+          alert("Failed to upload PDFs. " + error.message);
+        }
+      }
+
+      const manualTags = newArticleForm.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag);
+      const combinedTags = [...manualTags, ...newArticleForm.clubs];
+
+      const articleData = {
+        headline: newArticleForm.headline,
+        content: newArticleForm.content,
+        category: newArticleForm.category,
+        tags: combinedTags,
+        images: imageUrls,
+        attachments: pdfUrls,
+      };
+
       if (editingArticle) {
         const response = await axios.put(
-          `http://localhost:5000/articles/${editingArticle._id}`,
+          `${API_URL}/articles/${editingArticle._id}`,
           articleData,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -379,8 +442,13 @@ function App() {
         setEditingArticle(null);
       } else {
         const response = await axios.post(
-          "http://localhost:5000/articles",
-          articleData
+          `${API_URL}/articles`,
+          articleData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setArticles((prevArticles) => [response.data, ...prevArticles]);
       }
@@ -397,6 +465,7 @@ function App() {
       setSelectedPdfFiles([]);
     } catch (error) {
       console.error("Error posting article:", error);
+      alert(`Error posting article: ${error.message}`);
     }
   };
 
@@ -409,7 +478,7 @@ function App() {
         content: article.content,
         author: adminUsername,
         category: article.category,
-        tags: article.tags.join(", "),
+        tags: article.tags ? article.tags.join(", ") : "",
         clubs: article.clubs || [],
       });
       setShowAddArticleModal(true);
@@ -426,29 +495,56 @@ function App() {
         theme={theme}
         setTheme={setTheme}
         onAboutClick={() => setCurrentView("about")}
-        hideExtras={currentView === "about"} // Hide right column in About Us view
+        hideExtras={currentView === "about"}
+        isAdmin={isAdminAuthenticated}
+        adminUsername={adminUsername}
+        onLogout={handleLogout}
       />
 
       {currentView === "home" ? (
         <>
           <div className="content">
-            <div className="sticky-day-header">
-              <hr className="day-separator" />
-              <span className="current-day-label">
-                {selectedDate.toLocaleDateString()}
-              </span>
-            </div>
-            <NewsContainer
-              ref={articlesContainerRef}
-              onScroll={handleScroll}
-              articles={filteredArticles}
-              layoutMode={layoutMode}
-              setSelectedArticle={setSelectedArticle}
-              onShare={handleShare}
-              toggleTag={toggleTag}
-              adminId={adminId}
-              onEdit={handleEditArticle}
-            />
+            {loading ? (
+              <div className="loading-spinner">Loading articles...</div>
+            ) : error ? (
+              <div className="error-message">
+                <h3>Error loading articles</h3>
+                <p>{error}</p>
+                <button onClick={() => window.location.reload()}>
+                  Try Again
+                </button>
+              </div>
+            ) : articles.length === 0 ? (
+              <div className="no-articles-message">
+                <h3>No articles found</h3>
+                <p>Be the first to add an article!</p>
+                {isAdminAuthenticated && (
+                  <button onClick={handleAddArticleClick}>
+                    Add New Article
+                  </button>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="sticky-day-header">
+                  <hr className="day-separator" />
+                  <span className="current-day-label">
+                    {selectedDate.toLocaleDateString()}
+                  </span>
+                </div>
+                <NewsContainer
+                  ref={articlesContainerRef}
+                  onScroll={handleScroll}
+                  articles={filteredArticles}
+                  layoutMode={layoutMode}
+                  setSelectedArticle={setSelectedArticle}
+                  onShare={handleShare}
+                  toggleTag={toggleTag}
+                  adminId={adminId}
+                  onEdit={handleEditArticle}
+                />
+              </>
+            )}
             <CalendarSection
               selectedDate={selectedDate}
               handleCalendarChange={handleCalendarChange}
@@ -487,6 +583,7 @@ function App() {
             handlePdfChange={handlePdfChange}
             handleNewArticleInputChange={handleNewArticleInputChange}
             adminUsername={adminUsername}
+            isEditing={!!editingArticle}
           />
           <ShareModal
             showShareModal={showShareModal}
