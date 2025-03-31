@@ -12,11 +12,25 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-// app.use(cors());
+// // app.use(cors());
+// app.use(cors({
+//   origin: "https://axiomfe.onrender.com"  // or use '*' for testing, then restrict later
+// }));
+// app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://axiomfe.onrender.com"
+];
+
 app.use(cors({
-  origin: "https://axiomfe.onrender.com"  // or use '*' for testing, then restrict later
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
 }));
-app.use(express.json());
 
 // Connect to MongoDB Atlas
 const connectDB = async () => {
